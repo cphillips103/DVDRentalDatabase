@@ -9,7 +9,7 @@ This project is to explore a database related to movie rentals.
 The Sakila Database holds information about a company that rents movie DVDs. For this project, we will be querying the database to gain an understanding of the customer base, such as what the patterns in movie watching are across different customer groups, how they compare on payment earnings, and how the stores compare in their performance.
 
 ### Database used
-The rental dates are all from 2005 and 2006, while the payment dates are all from 2007.
+The DVD Rental dates are all from 2005 and 2006, while the payment dates are all from 2007.
 
 ### Analysis Variables And Software
 Database Diagram
@@ -17,7 +17,12 @@ Database Diagram
 ![Image of Schima](https://video.udacity-data.com/topher/2018/September/5ba95d23_dvd-rental-erd-2/dvd-rental-erd-2.png)
 
 
+### Comments On Findings
 
+![Slide 1](https://github.com/cphillips103/DVDRentalDatabase/blob/main/Slide1.png)
+![Slide 2](https://github.com/cphillips103/DVDRentalDatabase/blob/main/Slide2.png)
+![Slide 3](https://github.com/cphillips103/DVDRentalDatabase/blob/main/Slide3.png)
+![Slide 4](https://github.com/cphillips103/DVDRentalDatabase/blob/main/Slide4.png)
 
 Software used:
 [Postgresql](https://www.postgresql.org/)
