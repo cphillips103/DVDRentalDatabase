@@ -17,12 +17,6 @@ Database Diagram
 ![Image of Schima](https://video.udacity-data.com/topher/2018/September/5ba95d23_dvd-rental-erd-2/dvd-rental-erd-2.png)
 
 
-### Quesions Asked
-
-![Slide 1]
-![Slide 2]
-![Slide 3]
-![Slide 4]
 
 
 Software used:
@@ -45,6 +39,10 @@ Files:
 [DVDRentalDatabase](http://www.postgresqltutorial.com/postgresql-sample-database/)
 
 
+
+
+
+
 Resources
 [Load PostgreSQL Sample Database Tutorial](https://www.postgresqltutorial.com/load-postgresql-sample-database/)
 
@@ -57,3 +55,4 @@ https://Udacity.com
 
 https://guides.github.com/features/mastering-markdown/
 
+Queries formated using freeformatter.com
