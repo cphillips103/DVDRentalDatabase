@@ -1,0 +1,159 @@
+/* Queries formated using freeformatter.com */
+/* Query 1 - query used for the first insight */
+--Create a query that lists each movie, the film category it is
+--classified in, and the number of times it has been rented out.
+WITH film_cat AS 
+(
+   SELECT
+      fcat.film_id,
+      c.category_id,
+      c.name AS category_name 
+   FROM
+      category c 
+      JOIN
+         film_category fcat 
+         ON c.category_id = fcat.category_id 
+   WHERE
+      c.name IN 
+      (
+         'Animation',
+         'Children',
+         'Classics',
+         'Comedy',
+         'Family',
+         'Music'
+      )
+)
+,
+film_t AS 
+(
+   SELECT
+      f.film_id AS film_id,
+      f.title AS film_title 
+   FROM
+      film f
+)
+,
+film_grp AS 
+(
+   SELECT
+      fc.film_id,
+      ft.film_title,
+      fc.category_name 
+   FROM
+      film_cat fc 
+      JOIN
+         film_t ft 
+         ON ft.film_id = fc.film_id
+)
+,
+film_rent AS 
+(
+   SELECT
+      i.film_id AS film_id,
+      r.rental_date AS dates 
+   FROM
+      rental r 
+      JOIN
+         inventory i 
+         ON r.inventory_id = i.inventory_id
+)
+SELECT DISTINCT
+(fg.film_title),
+   fg.category_name,
+   COUNT(fr.dates) OVER (PARTITION BY fg.film_title) AS rental_count 
+FROM
+   film_grp fg 
+   JOIN
+      film_rent fr 
+      ON fg.film_id = fr.film_id 
+ORDER BY
+   2,
+   1;
+/* Query 2 - query used for the second insight */
+--Provide table of family-friendly movie titles by quartile
+WITH film_cat AS 
+(
+   SELECT
+      fcat.film_id,
+      c.category_id AS category_id,
+      c.name AS category_name 
+   FROM
+      category c 
+      JOIN
+         film_category fcat 
+         ON c.category_id = fcat.category_id
+)
+SELECT
+   f.title,
+   fc.category_name,
+   f.rental_duration,
+   NTILE(4) OVER (PARTITION BY f.title 
+ORDER BY
+   f.rental_duration) AS quartile 
+FROM
+   film f 
+   JOIN
+      film_cat fc 
+      ON f.film_id = fc.film_id;
+/* Query 3 - query used for the third insight */
+--We would like to know who were our top 10 paying customers, how many --payments they made on a monthly basis during 2007, and what was the
+--amount of the monthly payments.
+WITH top_names AS 
+(
+   SELECT
+      CONCAT(c.first_name, ' ', c.last_name) AS full_name,
+      SUM(p.amount) AS amount_total 
+   FROM
+      customer c 
+      JOIN
+         payment p 
+         ON p.customer_id = c.customer_id 
+   GROUP BY
+      1 
+   ORDER BY
+      2 DESC LIMIT 10
+)
+SELECT
+   DATE_TRUNC('month', p.payment_date) AS pay_month,
+   tn.full_name,
+   COUNT(p.amount) AS Pay_countpermon,
+   SUM(p.amount) AS pay_amount 
+FROM
+   top_names tn 
+   JOIN
+      customer c 
+      ON tn.full_name = CONCAT(c.first_name, ' ', c.last_name) 
+   JOIN
+      payment p 
+      ON p.customer_id = c.customer_id 
+WHERE
+   p.payment_date BETWEEN '2007-01-01' AND '2008-01-01' 
+GROUP BY
+   2,
+   1 
+ORDER BY
+   2,
+   1,
+   3;
+/* Query 4 - query used for the fourth insight */
+--We want to find out how the two stores compare in their count of
+--rental orders during every month for all the years we have date for.
+SELECT
+   date_part('month', r.rental_date) AS month,
+   date_part('year', r.rental_date) AS year,
+   i.store_id,
+   COUNT(r.rental_id) rental_count 
+FROM
+   rental r 
+   JOIN
+      inventory i 
+      ON r.inventory_id = i.inventory_id 
+GROUP BY
+   1,
+   2,
+   3 
+ORDER BY
+   2,
+   1,
+   3;
